@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import { /* ..., */ Tooltip } from '@mui/material';
@@ -46,25 +46,24 @@ const AdminDashboard = () => {
 
   // --- HANDLER FUNCTIONS ---
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const [locationsRes, ticketsRes, usersRes] = await Promise.all([
-        api.get('/locations'),
-        api.get('/tickets/all'),
-        api.get('/users')
-      ]);
-      setLocations(locationsRes.data);
-      setTickets(ticketsRes.data);
-      setUsers(usersRes.data);
-      setError('');
-      fetchSidebarStats();
-    } catch (err) {
-      setError('Failed to fetch data.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            const [locationsRes, ticketsRes, usersRes] = await Promise.all([
+                api.get('/locations'),
+                api.get('/tickets/all'),
+                api.get('/users')
+            ]);
+            setLocations(locationsRes.data);
+            setTickets(ticketsRes.data);
+            setUsers(usersRes.data);
+            setError('');
+        } catch (err) {
+            setError('Failed to fetch data.');
+        } finally {
+            setLoading(false);
+        }
+    }, []);
   
   useEffect(() => {
     fetchData();
