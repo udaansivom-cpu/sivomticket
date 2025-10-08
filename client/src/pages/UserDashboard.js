@@ -63,15 +63,14 @@ const UserDashboard = () => {
         ]);
         setAllTickets(ticketsRes.data);
         setStats(statsRes.data);
-        setError('');
       } catch (err) {
         setError('Failed to fetch dashboard data.');
       } finally {
         setLoading(false);
       }
     };
-    fetchAllData();
-  }, []);
+    fetchAllData(); // Call the function
+}, []);
 
   const openModal = (ticket, type) => {
     setSelectedTicket(ticket);
